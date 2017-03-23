@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>huatiePrize-2016</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script language="JavaScript" src="js/jquery-1.10.2.min.js"></script>
+</head>
+<script language="JavaScript">
+    // 人数
+    var x = 1;
+    var y = 407;
+    // 必中名单
+    var z = [274, 53];
+    // 中奖名单
+    var prizeList = new Array();
+
+    var prizeCount = 0;
+
+    var prizes = prizeList.join(",");
+    // 判断开始&结束
+    var isPrize = true;
+
+    // 定时器
+    var timer;
+    $(document).keypress(function(event){
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if("13" == keycode && isPrize){
+            console.log("开始");
+            isPrize = false;
+            prizes = prizeList.join(",");
+            interval();
+        } else if("13" == keycode && !isPrize){
+            console.log("结束");
+            isPrize = true;
+            clearInterval(timer);
+
+            if (z.length > 0 && z.length > prizeCount){
+                var rand = parseInt(Math.random() * (1 - 10 + 1) + 10);
+                var r = rand%2;
+                $(".main").eq(r).find("div").eq(rand%5).html("<img class=\"people\" src=\"images/bb (" + (z[prizeCount]) + ").jpg\" />");
+                prizeCount += 1;
+            }
+
+
+            // 添加到以中奖名单
+            var l = $(".main").find("div > img").each(function (i) {
+                var reg = /[1-9][0-9]*/g;
+                var people = $(this).attr("src")
+                var numList = people.match(reg);
+                prizeList.push(numList[0]);
+                console.log("中奖人" + numList[0]);
+                console.log(prizeList);
+            });
+        }
+    });
+
+    // 定时执行
+    function interval() {
+        timer = setInterval(runPrize, 50);
+    }
+
+    /**
+     * 开始抽奖
+     */
+    function runPrize(){
+        var rands = "";
+        var html = "";
+        var zz = z.toString() + ",";
+        for(var h = 0; h < 2; h++){
+            html += "<div class=\"main\">";
+            for (var i = 0; i < 5; i++){
+                var rand = parseInt(Math.random() * (x - y + 1) + y);
+                rands += rand + ",";
+                var test =  new RegExp(rand, "g");
+                var result = rands.match(test);
+                console.log("aaaaaaaa" + zz);
+
+                if (zz.indexOf(rand) > 0){
+                    console.log("以中过奖");
+                    i -= 1;
+                    continue;
+                }
+                if (result.length > 1){
+                    console.log("以中过奖");
+                    i -= 1;
+                    continue;
+                }
+                // 判断是否中过奖
+                if (prizes.indexOf(rand + ",") > 0){
+                    console.log("以中过奖");
+                    i -= 1;
+                    continue;
+                }
+                var imgUrl = "images/bb ("+ (rand) + ").jpg";
+                html += "<div class=\"prizePeople\"><img class=\"people\" src=\"" + imgUrl + "\" /></div>";
+            }
+            html += "</div>";
+            rands = "";
+        }
+        $(".cen").html(html);
+    }
+
+    /*var timer = setInterval(function () {
+        var html = "";
+        for (var i = 0; i < 6; i++){
+            var rand = parseInt(Math.random() * (x - y + 1) + y);
+            console.log(rand);
+            var imgUrl = "images/bb ("+ (rand) + ").jpg";
+            html += "<div class=\"prizePeople\"><img class=\"people\" src=\"" + imgUrl + "\" /></div>";
+        }
+        $(".main").html(html);
+    }, 500);*/
+
+
+    /*setInterval(function () {
+        var html = "";
+        for (var i = 0; i < 6; i++){
+            var rand = parseInt(Math.random() * (x - y + 1) + y);
+            console.log(rand);
+            var imgUrl = "images/bb ("+ (rand) + ").jpg";
+            html += "<img class=\"people\" src=\"images/抽奖照片/1.jpg\" />";
+            $(".people").eq(i).attr("src", imgUrl);
+        }
+        if (!isPrize){
+            clearInterval(1);
+        }
+    }, 50);*/
+
+
+
+
+
+</script>
+<body>
+<div class="bg">
+    <img src="images/bg.png" class="bgimg"/>
+</div>
+<!--<div class="title">
+    华铁传媒2016年度，年会抽奖活动。
+</div>-->
+<div class="cen">
+    <div class="main">
+        <div class="prizePeople">
+            <img class="people" src="images/head.gif" />
+        </div>
+
+        <div class="prizePeople">
+            <img class="people" src="images/head.gif" />
+        </div>
+
+        <div class="prizePeople">
+            <img class="people" src="images/head.gif" />
+        </div>
+
+        <div class="prizePeople">
+            <img class="people" src="images/head.gif" />
+        </div>
+
+        <div class="prizePeople">
+            <img class="people" src="images/head.gif" />
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="prizePeople">
+            <img class="people" src="images/head.gif" />
+        </div>
+
+        <div class="prizePeople">
+            <img class="people" src="images/head.gif" />
+        </div>
+
+        <div class="prizePeople">
+            <img class="people" src="images/head.gif" />
+        </div>
+
+        <div class="prizePeople">
+            <img class="people" src="images/head.gif" />
+        </div>
+
+        <div class="prizePeople">
+            <img class="people" src="images/head.gif" />
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
